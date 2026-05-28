@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: produto-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: produto-service
+  template:
+    metadata:
+      labels:
+        app: produto-service
+    spec:
+      containers:
+        - name: produto-service
+          image: produto-service:2.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5001
+          env:
+            - name: DB_HOST
+              value: postgres-service
+            - name: DB_NAME
+              value: loja_db
+            - name: DB_USER
+              value: loja_user
+            - name: DB_PASSWORD
+              value: loja_pass
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: produto-service
+spec:
+  selector:
+    app: produto-service
+  ports:
+    - port: 5001
+      targetPort: 5001
+  type: ClusterIP

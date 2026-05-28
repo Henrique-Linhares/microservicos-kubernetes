@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microserviços com Kubernetes</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Sistema de Pedidos</h1>
+        <p>Exemplo com microserviços, contêineres, Kubernetes e PostgreSQL</p>
+    </header>
+
+    <main>
+        <section class="card">
+            <h2>Cadastrar Produto</h2>
+            <form id="formProduto">
+                <input type="text" id="nome" placeholder="Nome do produto" required>
+                <input type="text" id="descricao" placeholder="Descrição">
+                <input type="number" id="preco" placeholder="Preço" step="0.01" required>
+                <input type="number" id="estoque" placeholder="Estoque" required>
+                <button type="submit">Cadastrar Produto</button>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>Criar Pedido</h2>
+            <form id="formPedido">
+                <select id="produto_id" required></select>
+                <input type="number" id="quantidade" placeholder="Quantidade" min="1" value="1" required>
+                <button type="submit">Criar Pedido</button>
+            </form>
+        </section>
+
+        <section class="grid">
+            <div class="card">
+                <h2>Produtos Cadastrados</h2>
+                <div id="listaProdutos" class="lista"></div>
+            </div>
+
+            <div class="card">
+                <h2>Pedidos Realizados</h2>
+                <div id="listaPedidos" class="lista"></div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

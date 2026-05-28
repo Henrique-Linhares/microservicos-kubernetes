@@ -1,0 +1,113 @@
+/* Aplica box-sizing para facilitar o controle de largura dos elementos. */
+* {
+    box-sizing: border-box;
+
+}
+
+/* Estilo geral da página. */
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f3f5f8;
+    color: #202938;
+}
+
+/* Cabeçalho superior da aplicação. */
+header {
+    background: #263447;
+    color: white;
+    padding: 28px;
+    text-align: center;
+    border-bottom: 5px solid #e30613;
+}
+
+header h1 {
+    margin: 0 0 8px 0;
+}
+
+/* Área principal centralizada com largura máxima. */
+main {
+    width: min(1100px, 94%);
+    margin: 24px auto;
+}
+
+/* Cards usados para separar visualmente os blocos da interface. */
+.card {
+    background: white;
+    padding: 20px;
+    margin-bottom: 18px;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* Grid para colocar produtos e pedidos lado a lado em telas maiores. */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+/* Formulários organizados em colunas. */
+form {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+input,
+select,
+button {
+    padding: 11px;
+    border-radius: 8px;
+    border: 1px solid #cfd6e0;
+    font-size: 15px;
+}
+
+button {
+    background: #263447;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #1d2836;
+}
+
+/* Cada produto ou pedido listado será exibido como um item. */
+.item {
+    border-left: 5px solid #e30613;
+    background: #f8fafc;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+
+.item strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+/* Classes para mensagens de sucesso ou erro, caso sejam adicionadas posteriormente. */
+.mensagem {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    background: #e8f5e9;
+    color: #1b5e20;
+}
+
+.erro {
+    background: #ffebee;
+    color: #b71c1c;
+}
+
+/* Ajuste responsivo para telas menores. */
+@media (max-width: 850px) {
+
+    form,
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres-loja
+    environment:
+      POSTGRES_DB: loja_db
+      POSTGRES_USER: loja_user
+      POSTGRES_PASSWORD: loja_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-dados:/var/lib/postgresql/data
+
+  produto-service:
+    build: ./produto-service
+    container_name: produto-service
+    environment:
+      DB_HOST: postgres
+      DB_NAME: loja_db
+      DB_USER: loja_user
+      DB_PASSWORD: loja_pass
+    ports:
+      - "5001:5001"
+    depends_on:
+      - postgres
+
+  pedido-service:
+    build: ./pedido-service
+    container_name: pedido-service
+    environment:
+      DB_HOST: postgres
+      DB_NAME: loja_db
+      DB_USER: loja_user
+      DB_PASSWORD: loja_pass
+      PRODUTO_SERVICE_URL: http://produto-service:5001
+    ports:
+      - "5002:5002"
+    depends_on:
+      - postgres
+      - produto-service
+
+  frontend-service:
+    build: ./frontend-service
+    container_name: frontend-service
+    environment:
+      PRODUTO_SERVICE_URL: http://produto-service:5001
+      PEDIDO_SERVICE_URL: http://pedido-service:5002
+    ports:
+      - "5000:5000"
+    depends_on:
+      - produto-service
+      - pedido-service
+
+volumes:
+  postgres-dados:

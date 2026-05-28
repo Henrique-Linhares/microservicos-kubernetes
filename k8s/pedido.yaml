@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pedido-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pedido-service
+  template:
+    metadata:
+      labels:
+        app: pedido-service
+    spec:
+      containers:
+        - name: pedido-service
+          image: pedido-service:2.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5002
+          env:
+            - name: DB_HOST
+              value: postgres-service
+            - name: DB_NAME
+              value: loja_db
+            - name: DB_USER
+              value: loja_user
+            - name: DB_PASSWORD
+              value: loja_pass
+            - name: PRODUTO_SERVICE_URL
+              value: http://produto-service:5001
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pedido-service
+spec:
+  selector:
+    app: pedido-service
+  ports:
+    - port: 5002
+      targetPort: 5002
+  type: ClusterIP

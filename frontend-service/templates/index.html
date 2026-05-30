@@ -3,17 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Microserviços com Kubernetes</title>
+    <title>Vokel Shop - Painel de Produtos</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
 
-    <header>
-        <h1>Sistema de Pedidos</h1>
-        <p>Exemplo com microserviços, contêineres, Kubernetes e PostgreSQL</p>
+    <header class="main-header">
+        <div class="header-container">
+            <a href="/" class="brand-logo">Vokel<span>Shop</span></a>
+            <nav class="nav-menu">
+                <a href="/" class="nav-link active">Produtos</a>
+                <a href="/pedidos" class="nav-link">Pedidos</a>
+            </nav>
+        </div>
     </header>
 
-    <main>
+    <main class="main-content">
         <section class="card">
             <h2>Cadastrar Produto</h2>
             <form id="formProduto">
@@ -21,31 +26,32 @@
                 <input type="text" id="descricao" placeholder="Descrição">
                 <input type="number" id="preco" placeholder="Preço" step="0.01" required>
                 <input type="number" id="estoque" placeholder="Estoque" required>
-                <button type="submit">Cadastrar Produto</button>
+                <button type="submit" class="btn btn-primary">Cadastrar Produto</button>
             </form>
         </section>
 
-        <section class="card">
-            <h2>Criar Pedido</h2>
-            <form id="formPedido">
-                <select id="produto_id" required></select>
-                <input type="number" id="quantidade" placeholder="Quantidade" min="1" value="1" required>
-                <button type="submit">Criar Pedido</button>
-            </form>
-        </section>
-
-        <section class="grid">
+        <section class="grid-single">
             <div class="card">
                 <h2>Produtos Cadastrados</h2>
                 <div id="listaProdutos" class="lista"></div>
             </div>
-
-            <div class="card">
-                <h2>Pedidos Realizados</h2>
-                <div id="listaPedidos" class="lista"></div>
-            </div>
         </section>
     </main>
+
+    <div id="productModal" class="modal">
+        <div class="modal-content card">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <h2 id="modalNome">Nome do Produto</h2>
+                <p id="modalDescricao" class="product-description">Descrição do produto aqui...</p>
+                <div class="product-details-box">
+                    <p><strong>Preço:</strong> <span id="modalPreco" class="price-current">R$ 0,00</span></p>
+                    <p><strong>Estoque Disponível:</strong> <span id="modalEstoque">0</span> unidades</p>
+                </div>
+                <a href="/pedidos" class="btn btn-accent" style="text-align: center; display: block; text-decoration: none;">Ir para Pedidos</a>
+            </div>
+        </div>
+    </div>
 
     <script src="/static/js/script.js"></script>
 </body>

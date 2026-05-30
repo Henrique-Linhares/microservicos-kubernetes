@@ -1,0 +1,27 @@
+IMAGENS:
+docker build -t produto-service:2.0 ./produto-service
+docker build -t pedido-service:2.0 ./pedido-service
+docker build -t frontend-service:2.0 ./frontend-service
+
+KUBERNETES:
+kubectl apply -f k8s/postgres.yaml
+kubectl apply -f k8s/rabbitmq.yaml
+kubectl apply -f k8s/produto.yaml
+kubectl apply -f k8s/pedido.yaml 
+kubectl apply -f k8s/frontend.yaml
+
+PARA TESTE:
+kubectl get pods
+kubectl get services
+kubectl get deployments
+
+PARA RESTART:
+kubectl rollout restart deployment/frontend-service
+kubectl rollout restart deployment/produto-service 
+kubectl rollout restart deployment/pedido-service 
+kubectl rollout restart deployment/rabbitmq-service 
+
+PARA ESCALAR:
+kubectl scale deployment produto-service --replicas=3
+kubectl scale deployment pedido-service --replicas=3
+kubectl scale deployment frontend-service --replicas=3

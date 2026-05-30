@@ -29,6 +29,8 @@ spec:
               value: loja_pass
             - name: PRODUTO_SERVICE_URL
               value: http://produto-service:5001
+            - name: RABBITMQ_HOST
+              value: rabbitmq-service
 
 ---
 apiVersion: v1

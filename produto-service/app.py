@@ -5,6 +5,10 @@ import os
 # Biblioteca usada para conectar a aplicação Python ao PostgreSQL
 import psycopg2
 from psycopg2.extras import RealDictCursor
+import pika
+import json
+import threading
+import time
 
 # Cria a aplicação Flask
 app = Flask(__name__)
@@ -16,6 +20,61 @@ DB_NAME = os.getenv("DB_NAME", "loja_db")
 DB_USER = os.getenv("DB_USER", "loja_user")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "loja_pass")
 DB_PORT = os.getenv("DB_PORT", "5432")
+
+RABBITMQ_HOST = os.getenv("RABBITMQ_HOST", "localhost")
+
+# Processa o pedido no RabbitMQ
+def processar_pedido(ch, method, properties, body):
+    pedido = json.loads(body)
+    produto_id = pedido.get("produto_id")
+    quantidade = pedido.get("quantidade", 1)
+
+    print(f"[RabbitMQ] Processando pedido #{pedido.get('id')} - produto {produto_id}")
+
+    try:
+        conexao = conectar()
+        cursor = conexao.cursor()
+        cursor.execute(
+            "UPDATE produtos SET estoque = estoque - %s WHERE id = %s AND estoque >= %s",
+            (quantidade, produto_id, quantidade)
+        )
+        afetadas = cursor.rowcount
+        conexao.commit()
+        cursor.close()
+        conexao.close()
+
+        if afetadas == 0:
+            print(f"Estoque insuficiente para produto {produto_id}")
+        else:
+            print(f"Estoque atualizado: -{quantidade} do produto {produto_id}")
+
+        ch.basic_ack(delivery_tag=method.delivery_tag)
+
+    except Exception as e:
+        print(f"[RabbitMQ] Erro ao processar: {e}")
+        ch.basic_nack(delivery_tag=method.delivery_tag, requeue=True)
+        
+
+def iniciar_consumidor():
+    time.sleep(10)
+    
+    while True:
+        try:
+            conexao = pika.BlockingConnection(
+                pika.ConnectionParameters(host=RABBITMQ_HOST)
+            )
+            
+            canal = conexao.channel()
+            canal.queue_declare(queue="pedidos", durable=True)
+            canal.basic_qos(prefetch_count=1)
+            canal.basic_consume(queue="pedidos", on_message_callback=processar_pedido)
+            print("Aguardando mensagens na fila de 'pedidos'...")
+            canal.start_consuming()
+        except Exception as e:
+            print(f"Reconectando... ({e})")
+            time.sleep(5)
+            
+            
 
 def conectar():
     """Abre uma conexão com o banco PostgreSQL."""
@@ -126,4 +185,6 @@ def buscar_produto(id_produto):
 if __name__ == "__main__":
     # Ao iniciar o contêiner, prepara a tabela antes de abrir o servidor Flask.
     iniciar_banco()
+    thread = threading.Thread(target=iniciar_consumidor, daemon=True)
+    thread.start()
     app.run(host="0.0.0.0", port=5001)

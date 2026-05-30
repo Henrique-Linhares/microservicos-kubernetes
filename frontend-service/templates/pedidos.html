@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vokel Shop - Sistema de Pedidos</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="header-container">
+            <a href="/" class="brand-logo">Vokel<span>Shop</span></a>
+            <nav class="nav-menu">
+                <a href="/" class="nav-link">Produtos</a>
+                <a href="/pedidos" class="nav-link active">Pedidos</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="card">
+            <h2>Criar Pedido</h2>
+            <form id="formPedido">
+                <label for="produto_id" style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem; display: block;">Selecione o Produto</label>
+                <select id="produto_id" required></select>
+                <input type="number" id="quantidade" placeholder="Quantidade" min="1" value="1" required>
+                <button type="submit" class="btn btn-accent">Criar Pedido</button>
+            </form>
+        </section>
+
+        <section class="grid-single">
+            <div class="card">
+                <h2>Pedidos Realizados</h2>
+                <div id="listaPedidos" class="lista"></div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

@@ -7,8 +7,35 @@ import requests
 # psycopg2 conecta o serviço ao PostgreSQL
 import psycopg2
 from psycopg2.extras import RealDictCursor
+import pika
+import json
 
 app = Flask(__name__)
+
+RABBITMQ_HOST = os.getenv("RABBITMQ_HOST", "localhost")
+
+# Função para publicar no RabbitMQ
+def publicar_pedido(pedido: dict):
+    try:
+        conexao = pika.BlockingConnection(
+            pika.ConnectionParameters(host=RABBITMQ_HOST)
+        )
+        canal = conexao.channel()
+
+        canal.queue_declare(queue="pedidos", durable=True)
+
+        canal.basic_publish(
+            exchange="",
+            routing_key="pedidos",
+            body=json.dumps(pedido, default=str),
+            properties=pika.BasicProperties(
+                delivery_mode=2  
+            )
+        )
+        conexao.close()
+        print(f"[RabbitMQ] Pedido {pedido['id']} publicado na fila.")
+    except Exception as e:
+        print(f"[RabbitMQ] Erro ao publicar: {e}")
 
 # Configurações do banco de dados recebidas por variáveis de ambiente
 DB_HOST = os.getenv("DB_HOST", "localhost")
@@ -104,6 +131,7 @@ def criar_pedido():
     conexao.commit()
     cursor.close()
     conexao.close()
+    publicar_pedido(dict(pedido))
     return jsonify(pedido), 201
 
 if __name__ == "__main__":

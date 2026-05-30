@@ -7,7 +7,6 @@ import requests
 
 app = Flask(__name__)
 
-# Endereços dos serviços. No Kubernetes, esses nomes são resolvidos pelo DNS interno.
 PRODUTO_SERVICE_URL = os.getenv("PRODUTO_SERVICE_URL", "http://localhost:5001")
 PEDIDO_SERVICE_URL = os.getenv("PEDIDO_SERVICE_URL", "http://localhost:5002")
 
@@ -15,6 +14,11 @@ PEDIDO_SERVICE_URL = os.getenv("PEDIDO_SERVICE_URL", "http://localhost:5002")
 def index():
     """Carrega a página principal do sistema."""
     return render_template("index.html")
+
+@app.route("/pedidos")
+def pedidos_page():
+    """Carrega a página de gerenciamento de pedidos."""
+    return render_template("pedidos.html")
 
 @app.route("/api/produtos", methods=["GET"])
 def listar_produtos():

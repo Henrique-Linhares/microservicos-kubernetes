@@ -27,6 +27,8 @@ spec:
               value: loja_user
             - name: DB_PASSWORD
               value: loja_pass
+            - name: RABBITMQ_HOST
+              value: rabbitmq-service
 
 ---
 apiVersion: v1

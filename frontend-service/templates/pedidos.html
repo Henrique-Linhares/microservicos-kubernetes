@@ -1,42 +1,38 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vokel Shop - Sistema de Pedidos</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}Vokel Shop - Meus pedidos{% endblock %}
+{% block page %}pedidos{% endblock %}
 
-    <header class="main-header">
-        <div class="header-container">
-            <a href="/" class="brand-logo">Vokel<span>Shop</span></a>
-            <nav class="nav-menu">
-                <a href="/" class="nav-link">Produtos</a>
-                <a href="/pedidos" class="nav-link active">Pedidos</a>
-            </nav>
-        </div>
-    </header>
+{% block content %}
+<section class="page-banner">
+    <div class="page-banner-inner">
+        <h1>Meus pedidos</h1>
+        <p>Acompanhe suas compras ou faça um pedido rápido.</p>
+    </div>
+</section>
 
-    <main class="main-content">
-        <section class="card">
-            <h2>Criar Pedido</h2>
+<main class="container">
+    <div class="stats">
+        <div class="stat"><span>🧾</span><div><small>Pedidos</small><strong id="statPedidos">0</strong></div></div>
+        <div class="stat"><span>📦</span><div><small>Itens comprados</small><strong id="statItens">0</strong></div></div>
+        <div class="stat"><span>💰</span><div><small>Total gasto</small><strong id="statTotal">R$ 0,00</strong></div></div>
+    </div>
+
+    <div class="orders-layout">
+        <section class="panel">
+            <h2>Histórico</h2>
+            <div id="listaPedidos" class="order-list"></div>
+        </section>
+
+        <aside class="panel panel-quick">
+            <h2>Pedido rápido</h2>
+            <p class="muted">Escolha um produto e a quantidade.</p>
             <form id="formPedido">
-                <label for="produto_id" style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem; display: block;">Selecione o Produto</label>
-                <select id="produto_id" required></select>
-                <input type="number" id="quantidade" placeholder="Quantidade" min="1" value="1" required>
-                <button type="submit" class="btn btn-accent">Criar Pedido</button>
+                <label>Produto<select id="produto_id" required></select></label>
+                <label>Quantidade<input type="number" id="quantidade" min="1" value="1" required></label>
+                <div class="quick-total">Total estimado <strong id="totalRapido">R$ 0,00</strong></div>
+                <button type="submit" class="btn btn-cta">Fazer pedido</button>
             </form>
-        </section>
-
-        <section class="grid-single">
-            <div class="card">
-                <h2>Pedidos Realizados</h2>
-                <div id="listaPedidos" class="lista"></div>
-            </div>
-        </section>
-    </main>
-
-    <script src="/static/js/script.js"></script>
-</body>
-</html>
+        </aside>
+    </div>
+</main>
+{% endblock %}

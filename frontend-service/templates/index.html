@@ -1,58 +1,84 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vokel Shop - Painel de Produtos</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}Vokel Shop - Automação e componentes industriais{% endblock %}
+{% block page %}loja{% endblock %}
 
-    <header class="main-header">
-        <div class="header-container">
-            <a href="/" class="brand-logo">Vokel<span>Shop</span></a>
-            <nav class="nav-menu">
-                <a href="/" class="nav-link active">Produtos</a>
-                <a href="/pedidos" class="nav-link">Pedidos</a>
-            </nav>
-        </div>
-    </header>
-
-    <main class="main-content">
-        <section class="card">
-            <h2>Cadastrar Produto</h2>
-            <form id="formProduto">
-                <input type="text" id="nome" placeholder="Nome do produto" required>
-                <input type="text" id="descricao" placeholder="Descrição">
-                <input type="number" id="preco" placeholder="Preço" step="0.01" required>
-                <input type="number" id="estoque" placeholder="Estoque" required>
-                <button type="submit" class="btn btn-primary">Cadastrar Produto</button>
-            </form>
-        </section>
-
-        <section class="grid-single">
-            <div class="card">
-                <h2>Produtos Cadastrados</h2>
-                <div id="listaProdutos" class="lista"></div>
+{% block content %}
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-text">
+            <span class="hero-tag">⚡ Ofertas da semana</span>
+            <h1>Tecnologia industrial<br>com <em>preço de atacado</em></h1>
+            <p>Sensores, motores e controladores das melhores marcas. Compre agora e receba em poucos dias.</p>
+            <div class="hero-actions">
+                <a href="#produtos" class="btn btn-cta btn-lg">Ver ofertas</a>
+                <button class="btn btn-outline-light btn-lg" id="abrirCadastro">+ Anunciar produto</button>
             </div>
-        </section>
-    </main>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+            <div class="hero-card c1">📡<small>Sensores</small></div>
+            <div class="hero-card c2">⚙️<small>Motores</small></div>
+            <div class="hero-card c3">🖥️<small>CLPs</small></div>
+        </div>
+    </div>
+</section>
 
-    <div id="productModal" class="modal">
-        <div class="modal-content card">
-            <span class="close-modal">&times;</span>
-            <div class="modal-body">
-                <h2 id="modalNome">Nome do Produto</h2>
-                <p id="modalDescricao" class="product-description">Descrição do produto aqui...</p>
-                <div class="product-details-box">
-                    <p><strong>Preço:</strong> <span id="modalPreco" class="price-current">R$ 0,00</span></p>
-                    <p><strong>Estoque Disponível:</strong> <span id="modalEstoque">0</span> unidades</p>
-                </div>
-                <a href="/pedidos" class="btn btn-accent" style="text-align: center; display: block; text-decoration: none;">Ir para Pedidos</a>
+<section class="benefits">
+    <div class="benefit"><span>🚚</span><div><strong>Entrega rápida</strong><small>Para todo o Brasil</small></div></div>
+    <div class="benefit"><span>💳</span><div><strong>Até 10x sem juros</strong><small>Nos principais cartões</small></div></div>
+    <div class="benefit"><span>🛡️</span><div><strong>Garantia</strong><small>12 meses de cobertura</small></div></div>
+    <div class="benefit"><span>🎧</span><div><strong>Suporte técnico</strong><small>Atendimento especializado</small></div></div>
+</section>
+
+<main class="container" id="produtos">
+    <div class="section-head">
+        <div>
+            <h2>Produtos em destaque</h2>
+            <p id="contadorProdutos">Carregando...</p>
+        </div>
+        <select id="ordenar" aria-label="Ordenar produtos">
+            <option value="recentes">Mais recentes</option>
+            <option value="menor">Menor preço</option>
+            <option value="maior">Maior preço</option>
+            <option value="nome">Nome (A-Z)</option>
+        </select>
+    </div>
+    <div id="listaProdutos" class="product-grid"></div>
+</main>
+{% endblock %}
+
+{% block modals %}
+<div id="productModal" class="modal">
+    <div class="modal-content">
+        <button class="icon-btn modal-close" data-close aria-label="Fechar">&times;</button>
+        <div class="detail">
+            <div class="detail-img" id="modalImg"></div>
+            <div class="detail-info">
+                <span class="badge" id="modalBadge"></span>
+                <h2 id="modalNome"></h2>
+                <p class="product-description" id="modalDescricao"></p>
+                <div class="price-big" id="modalPreco"></div>
+                <small class="installments" id="modalParcela"></small>
+                <p class="stock-line"><strong id="modalEstoque">0</strong> unidades disponíveis</p>
+                <button class="btn btn-cta" id="modalComprar">Adicionar ao carrinho</button>
             </div>
         </div>
     </div>
+</div>
 
-    <script src="/static/js/script.js"></script>
-</body>
-</html>
+<div id="cadastroModal" class="modal">
+    <div class="modal-content modal-sm">
+        <button class="icon-btn modal-close" data-close aria-label="Fechar">&times;</button>
+        <h2>Anunciar produto</h2>
+        <p class="muted">Cadastre um novo item no catálogo da loja.</p>
+        <form id="formProduto">
+            <label>Nome do produto<input type="text" id="nome" placeholder="Ex.: Sensor de proximidade" required></label>
+            <label>Descrição<input type="text" id="descricao" placeholder="Resumo das características"></label>
+            <div class="form-row">
+                <label>Preço (R$)<input type="number" id="preco" placeholder="0,00" step="0.01" min="0" required></label>
+                <label>Estoque<input type="number" id="estoque" placeholder="0" min="0" required></label>
+            </div>
+            <button type="submit" class="btn btn-cta">Publicar produto</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

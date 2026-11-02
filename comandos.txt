@@ -25,3 +25,8 @@ PARA ESCALAR:
 kubectl scale deployment produto-service --replicas=3
 kubectl scale deployment pedido-service --replicas=3
 kubectl scale deployment frontend-service --replicas=3
+
+KUBERNETES: http://localhost:30080
+RABBITMQ: http://localhost:31672
+user: guest
+senha: guest

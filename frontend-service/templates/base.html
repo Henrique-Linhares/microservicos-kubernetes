@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Vokel Shop{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body data-page="{% block page %}{% endblock %}">
+
+    <div class="topbar">
+        <span>🚚 Frete grátis em compras acima de R$ 500</span>
+        <span class="topbar-sep">•</span>
+        <span>💳 Em até 10x sem juros</span>
+        <span class="topbar-sep">•</span>
+        <span>🔒 Compra 100% segura</span>
+    </div>
+
+    <header class="main-header">
+        <div class="header-container">
+            <a href="/" class="brand-logo"><span class="brand-mark">V</span><span class="brand-text">Vokel<em>Shop</em></span></a>
+
+            <div class="search-box">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                <input type="search" id="busca" placeholder="Buscar produtos, marcas e muito mais..." autocomplete="off">
+            </div>
+
+            <nav class="nav-menu">
+                <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">Loja</a>
+                <a href="/pedidos" class="nav-link {% if request.path == '/pedidos' %}active{% endif %}">Meus pedidos</a>
+                <button class="cart-btn" id="abrirCarrinho" aria-label="Abrir carrinho">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.4 12.2a1 1 0 0 0 1 .8h9.7a1 1 0 0 0 1-.8L21 7H6"/></svg>
+                    <span class="cart-badge" id="cartBadge">0</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    {% block content %}{% endblock %}
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div>
+                <a href="/" class="brand-logo brand-logo-light"><span class="brand-mark">V</span><span class="brand-text">Vokel<em>Shop</em></span></a>
+                <p>Automação e componentes industriais com entrega rápida e garantia de qualidade.</p>
+            </div>
+            <div>
+                <h4>Institucional</h4>
+                <a href="/">Sobre nós</a>
+                <a href="/">Trocas e devoluções</a>
+                <a href="/">Política de privacidade</a>
+            </div>
+            <div>
+                <h4>Atendimento</h4>
+                <a href="/pedidos">Acompanhar pedido</a>
+                <a href="/">Central de ajuda</a>
+                <a href="/">Fale conosco</a>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2026 Vokel Shop · Projeto acadêmico de microsserviços com Kubernetes</div>
+    </footer>
+
+    <div class="overlay" id="overlay"></div>
+    <aside class="drawer" id="carrinho" aria-label="Carrinho de compras">
+        <div class="drawer-header">
+            <h3>Meu carrinho</h3>
+            <button class="icon-btn" id="fecharCarrinho" aria-label="Fechar">&times;</button>
+        </div>
+        <div class="drawer-body" id="carrinhoItens"></div>
+        <div class="drawer-footer">
+            <div class="drawer-total"><span>Total</span><strong id="carrinhoTotal">R$ 0,00</strong></div>
+            <button class="btn btn-cta" id="finalizar">Finalizar compra</button>
+            <button class="btn btn-ghost" id="limparCarrinho">Limpar carrinho</button>
+        </div>
+    </aside>
+
+    <div class="toasts" id="toasts"></div>
+
+    {% block modals %}{% endblock %}
+
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

@@ -63,7 +63,7 @@ docker-compose up --build
 
 Acesse: `http://localhost:5000`
 
-> Obs.: o `docker-compose.yml` sobe `postgres`, `produto-service`, `pedido-service` e `frontend-service`. Para testar a mensageria com RabbitMQ localmente, é necessário adicioná-lo ao compose ou subir os serviços no Kubernetes (abaixo).
+> Obs.: o `docker-compose.yml` sobe `postgres`, `rabbitmq`, `produto-service`, `pedido-service` e `frontend-service`. O painel do RabbitMQ fica em `http://localhost:15672` (`guest`/`guest`).
 
 ### Opção 2 — Kubernetes
 
